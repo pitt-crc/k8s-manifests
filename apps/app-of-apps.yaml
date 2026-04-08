@@ -11,6 +11,8 @@ spec:
     repoURL: https://github.com/pitt-crc/k8s-manifests.git
     targetRevision: argo
     path: argocd
+    kustomize:
+      enableHelm: true
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
