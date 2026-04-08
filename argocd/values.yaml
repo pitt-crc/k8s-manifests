@@ -3,5 +3,17 @@ configs:
     kustomize.buildOptions: "--enable-helm"
 
 server:
+  extraArgs:
+    - --tls-secret-name=argocd-tls
+
   service:
     type: LoadBalancer
+    loadBalancerIP: 10.7.84.16
+
+  certificate:
+    enabled: true
+    secretName: argocd-tls
+    issuer:
+      name: sectigo-issuer
+      kind: ClusterIssuer
+    domain: argo.crcd.pitt.edu
