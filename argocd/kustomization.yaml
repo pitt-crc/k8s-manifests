@@ -6,4 +6,10 @@ resources:
 
 patches:
   - path: overlays/argocd-cm.yaml
+    target:
+      kind: ConfigMap
+      name: argocd-cm
   - path: overlays/argocd-rbac-cm.yaml
+    target:
+      kind: ConfigMap
+      name: argocd-rbac-cm
