@@ -5,5 +5,5 @@ resources:
   - https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/ha/install.yaml
 
 patches:
-  - path: ../overlays/argocd-ldap-cm.yaml
+  - path: ../overlays/argocd-cm.yaml
   - path: ../overlays/argocd-rbac-cm.yaml

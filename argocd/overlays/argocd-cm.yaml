@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: argocd-ldap-cm
+  name: argocd-cm
   namespace: argocd
 data:
   # LDAP / Dex connector
