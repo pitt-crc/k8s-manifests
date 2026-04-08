@@ -9,7 +9,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/pitt-crc/k8s-manifests.git
-    targetRevision: argo
+    targetRevision: main
     path: argocd
   destination:
     server: https://kubernetes.default.svc

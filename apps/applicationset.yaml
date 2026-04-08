@@ -8,7 +8,7 @@ spec:
   generators:
     - git:
         repoURL: https://github.com/pitt-crc/k8s-manifests.git
-        revision: argo
+        revision: main
         directories:
           - path: apps/*
             exclude: false
@@ -20,7 +20,7 @@ spec:
       project: default
       source:
         repoURL: https://github.com/pitt-crc/k8s-manifests.git
-        targetRevision: argo
+        targetRevision: main
         path: "{{ .path.path }}"
       destination:
         server: https://kubernetes.default.svc
