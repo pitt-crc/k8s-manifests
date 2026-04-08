@@ -1,11 +1,10 @@
 configs:
   cm:
     kustomize.buildOptions: "--enable-helm"
+  params:
+    server.tls.secret.name: argocd-tls
 
 server:
-  extraArgs:
-    - --tls-secret-name=argocd-tls
-
   service:
     type: LoadBalancer
     loadBalancerIP: 10.7.84.16
