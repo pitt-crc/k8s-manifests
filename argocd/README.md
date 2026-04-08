@@ -48,14 +48,16 @@ kubectl port-forward svc/argocd-server -n argocd 8080:443
 
 Then open https://localhost:8080 and log in as `admin`.
 
-## Apply the App-of-Apps
+Apply the App-of-Apps
 
 ```bash
 kubectl apply -f apps/app-of-apps.yaml
+kubectl apply -f apps/applicationset.yaml
 ```
 
 ArgoCD will sync itself and all child applications from Git. Manual `kubectl`
 edits will be reverted automatically (`selfHeal: true`).
+
 
 ---
 
