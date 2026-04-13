@@ -5,8 +5,6 @@
 - `kubectl` configured and pointing at the target cluster
 - `helm`
 
-
-
 ## Install
 
 Verify your context before proceeding:

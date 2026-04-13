@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
   name: apps
-  namespace: argocd
+  namespace: admin-argocd
 spec:
   goTemplate: true
   generators:
@@ -15,16 +15,16 @@ spec:
   template:
     metadata:
       name: "{{ .path.basenameNormalized }}"
-      namespace: argocd
+      namespace: admin-argocd
     spec:
-      project: management
+      project: admin
       source:
         repoURL: https://github.com/pitt-crc/k8s-manifests.git
         targetRevision: main
         path: "{{ .path.path }}"
       destination:
         server: https://kubernetes.default.svc
-        namespace: "management-{{ .path.basenameNormalized }}"
+        namespace: "admin-{{ .path.basenameNormalized }}"
       syncPolicy:
         automated:
           prune: true
