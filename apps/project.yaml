@@ -3,8 +3,6 @@ kind: AppProject
 metadata:
   name: admin
   namespace: admin-argocd
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
 spec:
   sourceRepos:
     - https://github.com/pitt-crc/k8s-manifests.git
