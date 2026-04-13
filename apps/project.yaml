@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: management
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  sourceRepos:
+    - https://github.com/pitt-crc/k8s-manifests.git
+  destinations:
+    - server: https://kubernetes.default.svc
+      namespace: management-*
+  clusterResourceWhitelist:
+    - group: ''
+      kind: Namespace

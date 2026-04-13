@@ -17,14 +17,14 @@ spec:
       name: "{{ .path.basenameNormalized }}"
       namespace: argocd
     spec:
-      project: default
+      project: management
       source:
         repoURL: https://github.com/pitt-crc/k8s-manifests.git
         targetRevision: main
         path: "{{ .path.path }}"
       destination:
         server: https://kubernetes.default.svc
-        namespace: "{{ .path.basenameNormalized }}"
+        namespace: "management-{{ .path.basenameNormalized }}"
       syncPolicy:
         automated:
           prune: true

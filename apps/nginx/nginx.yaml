@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: nginx
+  name: management-nginx
   labels:
     kubernetes.io/metadata.name: nginx
     pod-security.kubernetes.io/enforce: privileged
@@ -11,7 +11,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx
-  namespace: nginx
+  namespace: management-nginx
   labels:
     app: nginx
 spec:
@@ -98,7 +98,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: nginx
-  namespace: nginx
+  namespace: management-nginx
   labels:
     app: nginx
 spec:
@@ -115,7 +115,7 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: nginx-tls
-  namespace: nginx
+  namespace: management-nginx
 spec:
   secretName: nginx-tls
   issuerRef:
