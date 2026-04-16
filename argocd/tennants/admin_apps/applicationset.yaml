@@ -1,8 +1,8 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: apps
-  namespace: admin-argocd
+  name: admin-apps
+  namespace: argocd
 spec:
   goTemplate: true
   generators:
@@ -11,13 +11,12 @@ spec:
         revision: main
         directories:
           - path: apps/*
-            exclude: false
   template:
     metadata:
       name: "{{ .path.basenameNormalized }}"
-      namespace: admin-argocd
+      namespace: argocd
     spec:
-      project: admin
+      project: admin-apps
       source:
         repoURL: https://github.com/pitt-crc/k8s-manifests.git
         targetRevision: main

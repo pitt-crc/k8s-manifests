@@ -1,0 +1,15 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: argocd
+  namespace: argocd
+spec:
+  description: Manages ArgoCD project and applicationset definitions from this repository.
+  sourceRepos:
+    - https://github.com/pitt-crc/k8s-manifests.git
+  destinations:
+    - server: https://kubernetes.default.svc
+      namespace: argocd
+  namespaceResourceWhitelist:
+    - group: "*"
+      kind: "*"

@@ -1,4 +1,4 @@
-# Bootstraping ArgoCD
+# Bootstrapping ArgoCD
 
 This document outlines procedures for bootstrapping ArgoCD on a Kubernetes cluster.
 The steps outlined below only need to be performed once.
