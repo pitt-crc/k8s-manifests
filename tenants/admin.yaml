@@ -10,23 +10,8 @@ spec:
   destinations:
     - server: https://kubernetes.default.svc
       namespace: admin-*
-  clusterResourceWhitelist:
-    - group: apiextensions.k8s.io
-      kind: CustomResourceDefinition
-    - group: rbac.authorization.k8s.io
-      kind: ClusterRole
-    - group: rbac.authorization.k8s.io
-      kind: ClusterRoleBinding
-    - group: admissionregistration.k8s.io
-      kind: MutatingWebhookConfiguration
-    - group: admissionregistration.k8s.io
-      kind: ValidatingWebhookConfiguration
-    - group: cert-manager.io
-      kind: ClusterIssuer
-    - group: ""
-      kind: Namespace
   namespaceResourceWhitelist:
-    - group: "*"
+    - group: "admin-*"
       kind: "*"
 ---
 apiVersion: argoproj.io/v1alpha1
