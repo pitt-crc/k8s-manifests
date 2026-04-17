@@ -10,9 +10,6 @@ spec:
   destinations:
     - server: https://kubernetes.default.svc
       namespace: admin-*
-  namespaceResourceWhitelist:
-    - group: "admin-*"
-      kind: "*"
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
