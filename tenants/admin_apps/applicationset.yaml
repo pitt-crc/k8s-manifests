@@ -13,7 +13,7 @@ spec:
           - path: apps/*
   template:
     metadata:
-      name: "{{ .path.basenameNormalized }}"
+      name: "admin-{{ .path.basenameNormalized }}"
       namespace: argocd
     spec:
       project: admin-apps

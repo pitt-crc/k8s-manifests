@@ -46,6 +46,7 @@ helm install argocd argo/argo-cd \
   --version 9.4.17 \
   --create-namespace \
   --set configs.cm."kustomize\.buildOptions"="--enable-helm" \
+  --set server.service.loadBalancerIP=10.7.84.16 \
   --set server.service.type=LoadBalancer \
   --wait
 ```
