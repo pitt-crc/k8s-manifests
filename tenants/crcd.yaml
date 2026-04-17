@@ -1,0 +1,49 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: crcd
+  namespace: argocd
+spec:
+  description: CRCD owned application deployments.
+  sourceRepos:
+    - https://github.com/pitt-crc/CRCD-App-Manifests.git
+  destinations:
+    - server: https://kubernetes.default.svc
+      namespace: crcd-*
+  clusterResourceWhitelist:
+    - group: ""
+      kind: Namespace
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: crcd
+  namespace: argocd
+spec:
+  goTemplate: true
+  generators:
+    - git:
+        repoURL: https://github.com/pitt-crc/CRCD-App-Manifests.git
+        revision: main
+        directories:
+          - path: apps/*
+  template:
+    metadata:
+      name: "crcd-{{ .path.basenameNormalized }}"
+      namespace: argocd
+    spec:
+      project: crcd
+      source:
+        repoURL: https://github.com/pitt-crc/CRCD-App-Manifests.git
+        targetRevision: main
+        path: "{{ .path.path }}"
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "crcd-{{ .path.basenameNormalized }}"
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true
