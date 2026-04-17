@@ -10,7 +10,7 @@ spec:
         repoURL: https://github.com/pitt-crc/k8s-manifests.git
         revision: main
         directories:
-          - path: argocd/tenants/*
+          - path: tenants/*
   template:
     metadata:
       name: "tenant-{{ .path.basenameNormalized }}"
