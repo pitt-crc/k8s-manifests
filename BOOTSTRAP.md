@@ -42,7 +42,7 @@ helm repo add argo https://argoproj.github.io/argo-helm
 helm repo update
 
 helm install argocd argo/argo-cd \
-  --namespace admin-argocd \
+  --namespace argocd \
   --version 9.4.17 \
   --create-namespace \
   --set configs.cm."kustomize\.buildOptions"="--enable-helm" \
@@ -57,11 +57,15 @@ Once properly configured, argoCD will detect every subdirectory under the `apps/
 From this point on, direct `kubectl` edits to managed resources will be reverted by ArgoCD automatically.
 
 ```bash
-kubectl apply -f apps/project.yaml
-kubectl apply -f apps/applicationset.yaml
+kubectl apply -f argocd/project.yaml
+kubectl apply -f argocd/application.yaml
 ```
 
 ### 4. Retrieve Initial Credentials
 
 ArgoCD will automatically create an `admin` user at install time.
 The default password for this user can be fetched using the command below.
+
+```bash
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+```
