@@ -28,3 +28,37 @@ spec:
   namespaceResourceWhitelist:
     - group: "*"
       kind: "*"
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: admin-apps
+  namespace: argocd
+spec:
+  goTemplate: true
+  generators:
+    - git:
+        repoURL: https://github.com/pitt-crc/k8s-manifests.git
+        revision: main
+        directories:
+          - path: apps/*
+  template:
+    metadata:
+      name: "admin-{{ .path.basenameNormalized }}"
+      namespace: argocd
+    spec:
+      project: admin-apps
+      source:
+        repoURL: https://github.com/pitt-crc/k8s-manifests.git
+        targetRevision: main
+        path: "{{ .path.path }}"
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "admin-{{ .path.basenameNormalized }}"
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+          - ServerSideApply=true
