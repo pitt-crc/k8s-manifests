@@ -3,9 +3,9 @@
 Production Kubernetes manifests for the Pitt CRCD cluster.
 
 This repository is the source of truth for core management infrastructure.
-It is responsible for managing cluster stateincluding GitOps tooling and cluster-wide
-services.
-It also contains the ArgoCD configuration that governs how tenant workloads are deployed.
+It is responsible for managing cluster state including GitOps tooling and cluster-wide
+services. It also contains the ArgoCD configuration that governs how tenant workloads
+are deployed.
 
 ## How This Repository Works
 
@@ -19,24 +19,42 @@ is defined here, ArgoCD corrects it.
 This repository uses an App-of-Apps pattern. Two root-level manifests bootstrap
 the entire system:
 
-- `apps/project.yaml` defines an ArgoCD `AppProject` that scopes all admin
-  applications to this repository and the `admin-*` namespaces.
-- `apps/applicationset.yaml` defines an `ApplicationSet` that watches the `apps/`
-  directory and automatically creates a deployment for each subdirectory it finds.
+- **argocd/**: ArgoCD self-management (Helm chart + configuration)
+- **apps/**: Cluster-wide admin services (one subdirectory per service)
+- **tenants/**: Tenant ArgoCD configuration (one file per tenant)
 
-Each subdirectory under `apps/` represents a single platform service such as ArgoCD
-itself, ingress, or cert-manager. Adding a directory is enough to deploy a new
-service with no manual ArgoCD configuration required.
+ArgoCD manages itself via a self-referencing `Application` that points at the `argocd/`
+directory. That directory contains a Kustomization which renders the ArgoCD Helm chart
+alongside the ArgoCD resources that define the rest of the system.
+
+Two additional Applications are bootstrapped from `argocd/`:
+
+- `argocd/application.yaml` — the self-manage Application, which reconciles the
+  `argocd/` directory itself.
+- `argocd/tenants.yaml` — a plain Application that watches the `tenants/` directory
+  and automatically deploys any manifest files it finds there.
+
+The `tenants/admin.yaml` file defines the `admin-apps` AppProject and an
+ApplicationSet that watches `apps/*`, automatically creating a deployment for each
+subdirectory it finds there.
+
+### Adding a New Administrative Service
+
+Create a subdirectory under `apps/` containing the relevant service manifests,
+Kustomization files, or Helm values. Merge the changes into `main` via a pull request
+and ArgoCD will provision the application on its next sync. No manual ArgoCD
+configuration is required.
 
 ### Tenant Workloads
 
-Tenants manage their application code and Kubernetes manifests in their own repositories.
-This repository owns the platform-side configuration that controls how those workloads run on the cluster:
+Tenants manage their application code and Kubernetes manifests in their own
+repositories. This repository owns the platform-side configuration that controls
+how those workloads run on the cluster.
 
-**What lives here:**
+**What lives here (in `tenants/`):**
 
-- `AppProject` definitions (what namespace and repo access rules)
-- `Application` or `ApplicationSet` definitions
+- `AppProject` definitions (namespace and repository access rules)
+- `Application` or `ApplicationSet` definitions pointing at tenant repositories
 - Namespace declarations and resource quotas
 - RBAC for tenant teams
 
@@ -51,18 +69,25 @@ A tenant's workload will not be deployed, and will not have cluster access, with
 the corresponding ArgoCD configuration in this repository. When onboarding a new
 tenant, the necessary ArgoCD resources must be added here first.
 
+## Bootstrapping the Cluster
+
+ArgoCD is installed once manually via Helm. After that, it manages itself and
+everything else through this repository. See `argocd/BOOTSTRAP.md` for the full
+procedure.
+
 ## Adding a New Administrative Service
 
-Deployment manifests for cluster-wide admin services are stored directly in this repository.
-Create a subdirectory under `apps/` containing the relevant service manifests, Kustomization files, or Helm values.
-Merge the changes into `main` via a pull request and ArgoCD will provision the application on its next sync.
+Create a subdirectory under `apps/` containing the relevant manifests and merge into
+`main`. ArgoCD will provision the service automatically on its next sync.
 
 ## Onboarding a New Tenant
 
 The tenant's own repository is responsible for the manifests that run their workload.
 This repository is responsible for granting it a place to run.
 
-1. Create a subdirectory under `apps/` for the tenant (e.g. `apps/<tenant-name>/`).
-2. Add an `AppProject` defining which source repositories and namespaces the tenant is permitted to use.
+1. Create a new file under `tenants/` (e.g. `tenants/<tenant-name>.yaml`).
+2. Add an `AppProject` defining which source repositories and namespaces the tenant
+   is permitted to use.
 3. Add an `Application` or `ApplicationSet` pointing at the tenant's own repository.
-4. Merge the changes into `main` via a pull request. ArgoCD will provision everything on the next sync.
+4. Merge the changes into `main` via a pull request. ArgoCD will provision everything
+   on the next sync.
