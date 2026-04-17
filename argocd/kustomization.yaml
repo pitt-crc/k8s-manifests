@@ -13,6 +13,4 @@ helmCharts:
 resources:
   - project.yaml
   - application.yaml
-  - tenants/admin_apps/project.yaml
-  - tenants/admin_apps/applicationset.yaml
-
+  - applicationset.yaml
