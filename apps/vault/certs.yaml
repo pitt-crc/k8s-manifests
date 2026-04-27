@@ -1,0 +1,83 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: vault-selfsigned-bootstrap
+  namespace: admin-vault
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: vault-internal-ca
+  namespace: admin-vault
+spec:
+  isCA: true
+  commonName: vault-internal-ca
+  secretName: tls-ca                 # was: vault-internal-ca
+  duration: 2160h
+  renewBefore: 1440h
+  privateKey:
+    algorithm: ECDSA
+    size: 256
+  issuerRef:
+    name: vault-selfsigned-bootstrap
+    kind: Issuer
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: vault-internal-ca
+  namespace: admin-vault
+spec:
+  ca:
+    secretName: tls-ca               # was: vault-internal-ca
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: vault-internal-tls
+  namespace: admin-vault
+spec:
+  secretName: tls-server             # was: vault-internal-tls
+  duration: 2160h
+  renewBefore: 1440h
+  issuerRef:
+    name: vault-internal-ca
+    kind: Issuer
+  dnsNames:
+    - vault.crcd.pitt.edu
+    - vault
+    - vault.admin-vault
+    - vault.admin-vault.svc
+    - vault.admin-vault.svc.cluster.local
+    - "*.vault-internal"
+    - vault-0.vault-internal
+    - vault-1.vault-internal
+    - vault-2.vault-internal
+    - vault-3.vault-internal
+    - vault-4.vault-internal
+  ipAddresses:
+    - 127.0.0.1
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: vault-public-tls
+  namespace: admin-vault
+spec:
+  secretName: vault-public-tls
+  issuerRef:
+    name: sectigo-issuer
+    kind: ClusterIssuer
+  dnsNames:
+    - vault.crcd.pitt.edu
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: kms-creds
+  namespace: admin-vault
+type: Opaque
+stringData:
+  placeholder: unused
