@@ -9,6 +9,15 @@ global:
       memory: 256Mi
       cpu: 250m
 
+injector:
+  securityContext:
+    pod:
+      seccompProfile:
+        type: RuntimeDefault
+    container:
+      seccompProfile:
+        type: RuntimeDefault
+
 server:
   # These Resource Limits are in line with node requirements in the
   # Vault Reference Architecture for a Small Cluster
