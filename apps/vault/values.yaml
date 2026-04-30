@@ -1,3 +1,5 @@
+# Global settings applied across all Vault components (server, injector, etc).
+# Enforces TLS between components and sets default resource limits.
 global:
   enabled: true
   tlsDisable: false
@@ -9,6 +11,9 @@ global:
       memory: 256Mi
       cpu: 250m
 
+# The Vault Injector intercepts pod creation across the cluster and injects a
+# sidecar container into any pod having the appropriate annotations. The helm
+# chart requires security contexts to be set manually.
 injector:
   securityContext:
     pod:
@@ -28,7 +33,19 @@ injector:
         drop:
           - ALL
 
+# The vault API server
 server:
+  # Resource limits inline with official Vault recommendations for a small
+  # HA cluster.
+  resources:
+    requests:
+      memory: 8Gi
+      cpu: 2000m
+    limits:
+      memory: 16Gi
+      cpu: 2000m
+
+  # The helm chart requires security contexts to be set manually.
   statefulSet:
     securityContext:
       pod:
@@ -45,20 +62,9 @@ server:
         capabilities:
           drop:
             - ALL
-            -
-  # These Resource Limits are in line with node requirements in the
-  # Vault Reference Architecture for a Small Cluster
-  resources:
-    requests:
-      memory: 8Gi
-      cpu: 2000m
-    limits:
-      memory: 16Gi
-      cpu: 2000m
 
-
-  # For HA configuration and because we need to manually init the vault,
-  # we need to define custom readiness/liveness Probe settings
+  # Custom readiness/liveness probes are required for high availability deployments
+  # These values are pulled directly from suggestions in the official docs.
   readinessProbe:
     enabled: true
     path: "/v1/sys/health?standbyok=true&sealedcode=204&uninitcode=204"
@@ -72,8 +78,10 @@ server:
   extraEnvironmentVars:
     VAULT_CACERT: /vault/userconfig/tls-ca/ca.crt
 
-  # extraVolumes is a list of extra volumes to mount. These will be exposed
-  # to Vault in the path `/vault/userconfig/<name>/`.
+  # TLS secrets mounted inside the server pods.
+  # tls-server: Certificate for TLS connections to the Vault server.
+  # tls-ca: The CA certificate used to sign the certificate in tls-server.
+  # kms-creds: credentials used to auto-unseal the vault on startup/restart.
   extraVolumes:
     - type: secret
       name: tls-server
@@ -82,6 +90,7 @@ server:
     - type: secret
       name: kms-creds
 
+  # Data storage used by raft to coordinate high availiblity deployments
   dataStorage:
     enabled: true
     size: 10Gi
@@ -89,8 +98,7 @@ server:
     storageClass: pitt-vcf-vks-storage-policy-latebinding
     accessMode: ReadWriteOnce
 
-  # This configures the Vault Statefulset to create a PVC for audit logs.
-  # See https://www.vaultproject.io/docs/audit/index.html to know more
+  # Data storage for application audit logging.
   auditStorage:
     enabled: true
     size: 10Gi
@@ -98,10 +106,11 @@ server:
     storageClass: pitt-vcf-vks-storage-policy-latebinding
     accessMode: ReadWriteOnce
 
+  # Run Vault in high availability mode with a five-node raft deployment.
+  # Each node explicitly joins via `retry_join` rather than relying on
+  # DNS-based discovery, which avoids split-brain during rolling restarts.
   standalone:
     enabled: false
-
-  # Run Vault in "HA" mode.
   ha:
     enabled: true
     replicas: 5
@@ -165,7 +174,7 @@ server:
       kind: ClusterIssuer
     domain: vault.crcd.pitt.edu
 
-# Vault UI
+# Vault web interface
 ui:
   enabled: true
   serviceType: "LoadBalancer"
