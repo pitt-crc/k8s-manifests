@@ -14,7 +14,7 @@ metadata:
 spec:
   isCA: true
   commonName: vault-internal-ca
-  secretName: tls-ca                 # was: vault-internal-ca
+  secretName: tls-ca
   duration: 2160h
   renewBefore: 1440h
   privateKey:
@@ -31,7 +31,7 @@ metadata:
   namespace: admin-vault
 spec:
   ca:
-    secretName: tls-ca               # was: vault-internal-ca
+    secretName: tls-ca
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
@@ -39,7 +39,7 @@ metadata:
   name: vault-internal-tls
   namespace: admin-vault
 spec:
-  secretName: tls-server             # was: vault-internal-tls
+  secretName: tls-server
   duration: 2160h
   renewBefore: 1440h
   issuerRef:
@@ -72,12 +72,4 @@ spec:
     kind: ClusterIssuer
   dnsNames:
     - vault.crcd.pitt.edu
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: kms-creds
-  namespace: admin-vault
-type: Opaque
-stringData:
-  placeholder: unused
+

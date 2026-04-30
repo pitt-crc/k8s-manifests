@@ -73,22 +73,18 @@ server:
     path: "/v1/sys/health?standbyok=true"
     initialDelaySeconds: 60
 
-  # extraEnvironmentVars is a list of extra environment variables to set with the stateful set. These could be
-  # used to include variables required for auto-unseal.
+  # List of extra environment variables to set with the stateful set.
   extraEnvironmentVars:
     VAULT_CACERT: /vault/userconfig/tls-ca/ca.crt
 
   # TLS secrets mounted inside the server pods.
   # tls-server: Certificate for TLS connections to the Vault server.
   # tls-ca: The CA certificate used to sign the certificate in tls-server.
-  # kms-creds: credentials used to auto-unseal the vault on startup/restart.
   extraVolumes:
     - type: secret
       name: tls-server
     - type: secret
       name: tls-ca
-    - type: secret
-      name: kms-creds
 
   # Data storage used by raft to coordinate high availiblity deployments
   dataStorage:
