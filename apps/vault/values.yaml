@@ -86,7 +86,7 @@ server:
     - type: secret
       name: tls-ca
 
-  # Data storage used by raft to coordinate high availiblity deployments
+  # Data storage used by raft to coordinate high availability deployments
   dataStorage:
     enabled: true
     size: 10Gi
