@@ -32,8 +32,6 @@ injector:
       capabilities:
         drop:
           - ALL
-        add:
-          - NET_BIND_SERVICE
 
 # The vault API server
 server:
@@ -129,7 +127,7 @@ server:
         }
         
         listener "tcp" {
-          address       = "0.0.0.0:443"
+          address       = "0.0.0.0:8443"
           tls_cert_file = "/vault/userconfig/vault-public-tls/tls.crt"
           tls_key_file  = "/vault/userconfig/vault-public-tls/tls.key"
         }
@@ -183,3 +181,4 @@ ui:
   loadBalancerIP: 10.7.84.17
   serviceNodePort: null
   externalPort: 443
+  targetPort: 8443
