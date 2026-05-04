@@ -85,6 +85,8 @@ server:
       name: tls-server
     - type: secret
       name: tls-ca
+    - type: secret
+      name: vault-public-tls
 
   # Data storage used by raft to coordinate high availability deployments
   dataStorage:
@@ -122,6 +124,12 @@ server:
           cluster_address = "0.0.0.0:8201"
           tls_cert_file = "/vault/userconfig/tls-server/tls.crt"
           tls_key_file = "/vault/userconfig/tls-server/tls.key"
+        }
+        
+        listener "tcp" {
+          address       = "0.0.0.0:443"
+          tls_cert_file = "/vault/userconfig/vault-public-tls/tls.crt"
+          tls_key_file  = "/vault/userconfig/vault-public-tls/tls.key"
         }
 
         storage "raft" {
