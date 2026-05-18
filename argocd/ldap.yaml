@@ -14,7 +14,7 @@ data:
       id: ldap
       config:
         host: "sam-ldap-prod-01.cssd.pitt.edu:389"
-        insecureNoSSL: true
+        insecureNoSSL: false
         insecureSkipVerify: true
         startTLS: true
         usernamePrompt: username
