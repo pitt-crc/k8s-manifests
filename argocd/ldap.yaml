@@ -22,6 +22,7 @@ data:
           baseDN: "dc=frank,dc=sam,dc=pitt,dc=edu"
           username: uid
           idAttr: uid
+          emailAttr: uid
         groupSearch:
           baseDN: "ou=groups,dc=frank,dc=sam,dc=pitt,dc=edu"
           userMatchers:
