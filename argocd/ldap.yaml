@@ -27,4 +27,4 @@ data:
           - userAttr: uid
             groupAttr: member
           nameAttr: name
-  url: argo.crcd.p;itt.edu
+  url: argo.crcd.pitt.edu
