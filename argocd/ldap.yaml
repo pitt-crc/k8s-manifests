@@ -16,7 +16,7 @@ data:
         host: "sam-ldap-prod-01.cssd.pitt.edu:389"
         insecureNoSSL: true
         insecureSkipVerify: true
-        startTLS: false
+        startTLS: true
         usernamePrompt: username
         userSearch:
           baseDN: "dc=frank,dc=sam,dc=pitt,dc=edu"
