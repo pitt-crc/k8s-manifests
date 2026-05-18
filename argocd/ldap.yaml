@@ -20,14 +20,12 @@ data:
         usernamePrompt: username
         userSearch:
           baseDN: "dc=frank,dc=sam,dc=pitt,dc=edu"
-          filter: "(objectClass=person)"
           username: uid
           idAttr: uid
           emailAttr: mail
           nameAttr: name
         groupSearch:
           baseDN: "ou=groups,dc=frank,dc=sam,dc=pitt,dc=edu"
-          filter: "(objectClass=group)"
           userMatchers:
           - userAttr: uid
             groupAttr: member
