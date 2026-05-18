@@ -1,6 +1,7 @@
 configs:
   cm:
     kustomize.buildOptions: "--enable-helm"
+    url: "https://argo.crcd.pitt.edu"
   params:
     server.tls.secret.name: argocd-tls
 
