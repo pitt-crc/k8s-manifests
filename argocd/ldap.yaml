@@ -1,0 +1,30 @@
+apiVersion: v1
+data:
+  # Leave as true untill LDAP has been successfuly set up - enables manual login
+  admin.enabled: "true"
+  dex.config: |
+    connectors:
+    - type: ldap
+      name: LDAP
+      id: ldap
+      config:
+        host: "ldap://sam-ldap-prod-01.cssd.pitt.edu"
+        insecureNoSSL: true
+        insecureSkipVerify: true
+        startTLS: false
+        usernamePrompt: username 
+        userSearch:
+          baseDN: "dc=frank,dc=sam,dc=pitt,dc=edu"
+          filter: "(objectClass=person)"
+          username: uid
+          idAttr: uid
+          emailAttr: mail
+          nameAttr: name
+        groupSearch:
+          baseDN: "ou=groups,dc=frank,dc=sam,dc=pitt,dc=edu"
+          filter: "(objectClass=group)"
+          userMatchers:
+          - userAttr: uid
+            groupAttr: member
+          nameAttr: name
+  url: argo.crcd.p;itt.edu
