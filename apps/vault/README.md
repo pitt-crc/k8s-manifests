@@ -1,4 +1,4 @@
-# Vault HA Deployment
+# Vault
 
 HashiCorp Vault is a secrets management tool for securely managing sensitive values.
 This deployment runs Vault as a multi-node high availability cluster.
