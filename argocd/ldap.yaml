@@ -1,18 +1,23 @@
 apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cm
+  namespace: argocd
 data:
-  # Leave as true untill LDAP has been successfuly set up - enables manual login
+  # Leave as true until LDAP has been successfully set up - enables manual login
   admin.enabled: "true"
+  url: https://argo.crcd.pitt.edu
   dex.config: |
     connectors:
     - type: ldap
       name: LDAP
       id: ldap
       config:
-        host: "ldap://sam-ldap-prod-01.cssd.pitt.edu"
+        host: "sam-ldap-prod-01.cssd.pitt.edu:389"
         insecureNoSSL: true
         insecureSkipVerify: true
         startTLS: false
-        usernamePrompt: username 
+        usernamePrompt: username
         userSearch:
           baseDN: "dc=frank,dc=sam,dc=pitt,dc=edu"
           filter: "(objectClass=person)"
@@ -27,4 +32,3 @@ data:
           - userAttr: uid
             groupAttr: member
           nameAttr: name
-  url: argo.crcd.pitt.edu
