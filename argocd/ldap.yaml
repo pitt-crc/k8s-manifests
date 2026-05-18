@@ -6,7 +6,6 @@ metadata:
 data:
   # Leave as true until LDAP has been successfully set up - enables manual login
   admin.enabled: "true"
-  url: https://argo.crcd.pitt.edu
   dex.config: |
     connectors:
     - type: ldap
