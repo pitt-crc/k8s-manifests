@@ -12,6 +12,11 @@ helmCharts:
 
 resources:
   - application.yaml
-  - ldap.yaml
   - project.yaml
   - tenants.yaml
+
+patches:
+  - path: ldap.yaml
+    target:
+      kind: ConfigMap
+      name: argocd-cm
