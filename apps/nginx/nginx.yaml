@@ -7,6 +7,12 @@ metadata:
     kubernetes.io/metadata.name: nginx
     pod-security.kubernetes.io/enforce: privileged
 ---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: admin-nginx-acc
+  namespace: admin-nginx
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -23,7 +29,13 @@ spec:
     metadata:
       labels:
         app: nginx
+      annotations:
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/role: "nginx"
+        # KV v2 path. The injected file lands at /vault/secrets/config
+        vault.hashicorp.com/agent-inject-secret-config: "secret/data/nginx/config"
     spec:
+      serviceAccountName: admin-nginx-acc
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
