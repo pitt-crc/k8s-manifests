@@ -32,8 +32,17 @@ spec:
       annotations:
         vault.hashicorp.com/agent-inject: "true"
         vault.hashicorp.com/role: "nginx"
-        # KV v2 path. The injected file lands at /vault/secrets/config
-        vault.hashicorp.com/agent-inject-secret-config: "secret/data/nginx/config"
+        # Render the KV v2 secret as a clean HTML file into the shared web root.
+        vault.hashicorp.com/agent-inject-secret-index.html: "secret/data/nginx/config"
+        vault.hashicorp.com/agent-inject-template-index.html: |
+          {{- with secret "secret/data/nginx/config" -}}
+          <!DOCTYPE html>
+          <html><body><pre>
+          {{ range $k, $v := .Data.data }}{{ $k }}: {{ $v }}
+          {{ end }}</pre></body></html>
+          {{- end -}}
+        # Write the rendered files into the nginx web root rather than /vault/secrets.
+        vault.hashicorp.com/secret-volume-path: "/usr/share/nginx/html"
     spec:
       serviceAccountName: admin-nginx-acc
       affinity:
@@ -45,41 +54,6 @@ spec:
                   matchLabels:
                     app: nginx
                 topologyKey: kubernetes.io/hostname
-      initContainers:
-        - name: init-content
-          image: busybox:1.37.0
-          resources:
-            requests:
-              cpu: 50m
-              memory: 32Mi
-            limits:
-              cpu: 100m
-              memory: 64Mi
-          env:
-            - name: K8S_NODE_NAME
-              valueFrom:
-                fieldRef:
-                  fieldPath: spec.nodeName
-            - name: POD_NAME
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.name
-          command:
-            - sh
-            - -c
-            - |
-              cat <<HTMLEOF > /usr/share/nginx/html/index.html
-              <!DOCTYPE html>
-              <html>
-              <head><title>Hello World</title></head>
-              <body><h1>Hello World from nginx</h1>
-              <p>Node: ${K8S_NODE_NAME}</p>
-              <p>Pod: ${POD_NAME}</p></body>
-              </html>
-              HTMLEOF
-          volumeMounts:
-            - name: content
-              mountPath: /usr/share/nginx/html
       containers:
         - name: nginx
           image: nginx:1.29.6-alpine
@@ -92,19 +66,7 @@ spec:
               memory: 4Gi
           ports:
             - containerPort: 80
-          volumeMounts:
-            - name: content
-              mountPath: /usr/share/nginx/html
-              readOnly: true
-            - name: nginx-tls
-              mountPath: /tmp/foo
-              readOnly: true
-      volumes:
-        - name: content
-          emptyDir: {}
-        - name: nginx-tls
-          secret:
-            secretName: nginx-tls
+      # No content emptyDir or init container needed — Vault writes index.html directly.
 ---
 apiVersion: v1
 kind: Service
@@ -122,16 +84,3 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 80
----
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: nginx-tls
-  namespace: admin-nginx
-spec:
-  secretName: nginx-tls
-  issuerRef:
-    name: sectigo-issuer
-    kind: ClusterIssuer
-  dnsNames:
-    - "foo.crc.pitt.edu"
