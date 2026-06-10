@@ -40,7 +40,7 @@ spec:
             - /bin/sh
             - -c
             - |
-              source /vault/secrets/config && nginx -g 'daemon off;'
+              . /vault/secrets/config && nginx -g 'daemon off;'
           securityContext:
             allowPrivilegeEscalation: false
             runAsNonRoot: true
