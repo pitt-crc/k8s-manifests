@@ -23,6 +23,7 @@ spec:
         vault.hashicorp.com/agent-init-first: "true"
         vault.hashicorp.com/agent-run-as-non-root: "true"
         vault.hashicorp.com/agent-set-security-context: "true"
+        vault.hashicorp.com/tls-skip-verify: "true"
     spec:
       serviceAccountName: admin-nginx-sa
       securityContext:
