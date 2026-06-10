@@ -168,14 +168,6 @@ server:
           }
         }
 
-  certificate:
-    enabled: true
-    secretName: vault-tls
-    issuer:
-      name: sectigo-issuer
-      kind: ClusterIssuer
-    domain: vault.crcd.pitt.edu
-
 # Vault web interface
 ui:
   enabled: true
