@@ -12,3 +12,4 @@ helmCharts:
 
 resources:
   - certs.yaml
+  - vault-token-reviewer.yaml
