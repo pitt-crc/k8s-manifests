@@ -20,8 +20,18 @@ spec:
           {{- with secret "secret/data/admin/nginx/test" -}}
           export TEST_VALUE="{{ .Data.data.value }}"
           {{- end }}
+        vault.hashicorp.com/agent-init-first: "true"
+        vault.hashicorp.com/agent-run-as-non-root: "true"
+        vault.hashicorp.com/agent-set-security-context: "true"
     spec:
       serviceAccountName: admin-nginx-sa
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 101
+        runAsGroup: 101
+        fsGroup: 101
+        seccompProfile:
+          type: RuntimeDefault
       containers:
         - name: nginx
           image: nginx:latest
@@ -30,3 +40,12 @@ spec:
             - -c
             - |
               source /vault/secrets/config && nginx -g 'daemon off;'
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsNonRoot: true
+            runAsUser: 101
+            seccompProfile:
+              type: RuntimeDefault
+            capabilities:
+              drop:
+                - ALL
