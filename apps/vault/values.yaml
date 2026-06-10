@@ -35,8 +35,7 @@ injector:
 
 # The vault API server
 server:
-  # Resource limits inline with official Vault recommendations for a small
-  # HA cluster.
+  # Resource limits inline with official recommendations for a small cluster.
   resources:
     requests:
       memory: 8Gi
@@ -79,9 +78,11 @@ server:
   extraEnvironmentVars:
     VAULT_CACERT: /vault/userconfig/tls-ca/ca.crt
 
-  # TLS secrets mounted inside the server pods.
+  # Secrets mounted inside the server pods for TLS configuration.
+  # Definitions for each secret are managed in `certs.yaml`.
   # tls-server: Certificate for TLS connections to the Vault server.
-  # tls-ca: The CA certificate used to sign the certificate in tls-server.
+  # tls-ca: Root CA certificate used to sign the certificate in tls-server.
+  # vault-public-tls: Certificate for TLS connections to the web UI.
   extraVolumes:
     - type: secret
       name: tls-server
@@ -168,7 +169,7 @@ server:
           }
         }
 
-# Vault web interface
+# Vault web interface settings
 ui:
   enabled: true
   serviceType: "LoadBalancer"
