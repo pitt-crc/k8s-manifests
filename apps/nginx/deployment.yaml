@@ -18,7 +18,7 @@ spec:
         vault.hashicorp.com/agent-inject-secret-config: "secret/admin/data/nginx/test"
         vault.hashicorp.com/agent-inject-template-config: |
           {{- with secret "secret/admin/data/nginx/test" -}}
-          export TEST_VALUE="{{ .data.data.value }}"
+          export TEST_VALUE="{{ .Data.data.data.value }}"
           {{- end }}
         vault.hashicorp.com/agent-init-first: "true"
         vault.hashicorp.com/agent-run-as-non-root: "true"
