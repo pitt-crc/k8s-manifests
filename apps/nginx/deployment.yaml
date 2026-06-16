@@ -24,6 +24,7 @@ spec:
         vault.hashicorp.com/agent-run-as-non-root: "true"
         vault.hashicorp.com/agent-set-security-context: "true"
         vault.hashicorp.com/tls-secret: "vault-ca-secret"
+        vault.hashicorp.com/ca-cert: "/vault/tls/ca.crt"
     spec:
       serviceAccountName: admin-nginx-sa
       securityContext:
