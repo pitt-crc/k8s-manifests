@@ -37,6 +37,9 @@ spec:
       containers:
         - name: nginx
           image: nginxinc/nginx-unprivileged:latest
+          ports:
+            - containerPort: 8080
+              name: http
           command:
             - /bin/sh
             - -c
@@ -65,3 +68,17 @@ spec:
             capabilities:
               drop:
                 - ALL
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+  namespace: admin-nginx
+spec:
+  selector:
+    app: nginx
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+  type: ClusterIP
