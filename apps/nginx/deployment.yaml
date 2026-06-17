@@ -46,7 +46,7 @@ spec:
             - |
               . /vault/secrets/config
 
-              cat >/usr/share/nginx/html/index.html <<EOF
+              cat >/tmp/index.html <<EOF
               <!DOCTYPE html>
               <html>
               <head>
