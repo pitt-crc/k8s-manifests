@@ -41,7 +41,21 @@ spec:
             - /bin/sh
             - -c
             - |
-              . /vault/secrets/config && nginx -g 'daemon off;'
+              . /vault/secrets/config
+
+              cat >/usr/share/nginx/html/index.html <<EOF
+              <!DOCTYPE html>
+              <html>
+              <head>
+                <title>Nginx Test</title>
+              </head>
+              <body>
+                <h1>TEST_VALUE=${TEST_VALUE}</h1>
+              </body>
+              </html>
+              EOF
+
+              exec nginx -g 'daemon off;'
           securityContext:
             allowPrivilegeEscalation: false
             runAsNonRoot: true
