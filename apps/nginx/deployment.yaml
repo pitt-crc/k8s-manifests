@@ -58,7 +58,7 @@ spec:
               </html>
               EOF
 
-              exec nginx -g 'daemon off;'
+              exec nginx -g 'env TEST_VALUE; daemon off;'
           securityContext:
             allowPrivilegeEscalation: false
             runAsNonRoot: true
