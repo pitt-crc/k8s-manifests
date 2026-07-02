@@ -43,10 +43,9 @@ tenant, the necessary ArgoCD resources must be added here first.
 
 **What lives in this repo:**
 
-- `AppProject` definitions (namespace and repository access rules)
-- `Application` or `ApplicationSet` definitions pointing at tenant repositories
 - Namespace declarations and resource quotas
-- RBAC for tenant teams
+- `AppProject` definitions used to enforce per-tennant security, governance, and RBAC policies
+- `Application` or `ApplicationSet` definitions configuring tenant repository deployment
 
 **What lives in the tenant repo:**
 
