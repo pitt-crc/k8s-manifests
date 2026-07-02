@@ -11,9 +11,8 @@ helmCharts:
     valuesFile: values.yaml
 
 resources:
-  - application.yaml
-  - project.yaml
-  - tenants.yaml
+  - applications.yaml
+  - appprojects.yaml
 
 patches:
-  - path: ldap.yaml
+  - path: patches/ldap.yaml
