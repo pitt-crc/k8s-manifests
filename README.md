@@ -9,30 +9,29 @@ Rather than deploying applications manually, manifests are loaded from this repo
 and automatically reconciled against the live cluster. If a resource drifts from what
 is defined here, ArgoCD corrects it.
 
-### Repository Structure
+## Repository Structure
 
 This repository provides manifests for three groups of applications.
 
 - **argocd/**: The ArgoCD application.
 - **apps/**: Cluster-wide administrative services (one subdirectory per service)
-- **tenants/**: Platform-side configuration granting customers/tenants access to the cluster 
- (one file per tenant)
+- **tenants/**: Configures customer/tenant access to the cluster (one file per tenant)
 
-### ArgoCD
+### ArgoCD (`argocd/`)
 
 ArgoCD manages itself via a self-referencing `Application` resource that points at
 the `argocd/` directory in this repository. That directory contains a Kustomization
 file which renders the ArgoCD Helm chart along with customized resource manifests used
 to configure the deployed application.
 
-### Administrative Services
+### Administrative Services (`apps/`)
 
 Administrative applications are used to monitor the production cluster and enforce
 general operational policies. This includes applications required by the Pitt Digital
 and Pitt Security teams. Changes to any administrative apps should be confirmed with
 a Pitt Digital administrator before being pushed to production.
 
-### Tenant Workloads
+### Tenant Workloads (`tenants/`)
 
 Tenants manage their application code and Kubernetes manifests in their own git
 repositories. This repository owns the platform-side configuration that controls
