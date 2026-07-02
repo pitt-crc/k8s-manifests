@@ -1,4 +1,4 @@
-# k8s-manifests
+# CRCD Kubernetes Configuration
 
 Production manifests for deploying administrative applications on the Pitt CRCD Kubernetes cluster.
 
