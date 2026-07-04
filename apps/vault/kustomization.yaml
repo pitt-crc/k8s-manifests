@@ -11,5 +11,5 @@ helmCharts:
     valuesFile: values.yaml
 
 resources:
-  - certs.yaml
-  - vault-token-reviewer.yaml
+  - certificates.yaml
+  - token-reviewer.yaml
