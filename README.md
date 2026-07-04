@@ -4,10 +4,12 @@ Production manifests for deploying administrative applications on the Pitt CRCD 
 
 ## How This Repository Works
 
-The CRCD Kubernetes cluster leverages a GitOps deployment model powered by [ArgoCD](https://argo-cd.readthedocs.io/).
+The CRCD Kubernetes clusters leverage a GitOps deployment model powered by [ArgoCD](https://argo-cd.readthedocs.io/).
 Rather than deploying applications manually, manifests are loaded from this repository
-and automatically reconciled against the live cluster. If a resource drifts from what
+and automatically reconciled against the live clusters. If a resource drifts from what
 is defined here, ArgoCD corrects it.
+
+Documentation for the initial ArgoCD deployment and configuration is available in the [BOOTSTRAP.md](BOOTSTRAP.md) file.
 
 ## Repository Structure
 
