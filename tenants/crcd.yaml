@@ -25,7 +25,7 @@ spec:
         - p, proj:crcd:tenant, applications, action/*, crcd/*, allow
         - p, proj:crcd:tenant, logs, get, crcd/*, allow
       groups:
-        - sam_frank_active_users
+        - sam_frank_admins_posix
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet

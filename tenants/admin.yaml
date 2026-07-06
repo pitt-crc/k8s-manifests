@@ -24,12 +24,12 @@ spec:
   roles:
     - name: tenant
       policies:
-        - p, proj:crcd:tenant, applications, get, crcd/*, allow
-        - p, proj:crcd:tenant, applications, sync, crcd/*, allow
-        - p, proj:crcd:tenant, applications, action/*, crcd/*, allow
-        - p, proj:crcd:tenant, logs, get, crcd/*, allow
+        - p, proj:admin-apps:tenant, applications, get, admin-apps/*, allow
+        - p, proj:admin-apps:tenant, applications, sync, admin-apps/*, allow
+        - p, proj:admin-apps:tenant, applications, action/*, admin-apps/*, allow
+        - p, proj:admin-apps:tenant, logs, get, admin-apps/*, allow
       groups:
-        - sam_frank_active_users
+        - sam_frank_admins_posix
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
