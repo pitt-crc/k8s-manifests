@@ -17,6 +17,15 @@ spec:
       kind: ClusterRole
     - group: rbac.authorization.k8s.io
       kind: ClusterRoleBinding
+  roles:
+    - name: tenant
+      policies:
+        - p, proj:crcd:tenant, applications, get, crcd/*, allow
+        - p, proj:crcd:tenant, applications, sync, crcd/*, allow
+        - p, proj:crcd:tenant, applications, action/*, crcd/*, allow
+        - p, proj:crcd:tenant, logs, get, crcd/*, allow
+      groups:
+        - sam_frank_active_users
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet

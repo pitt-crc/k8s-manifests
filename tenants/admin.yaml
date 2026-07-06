@@ -22,12 +22,14 @@ spec:
     - group: admissionregistration.k8s.io
       kind: ValidatingWebhookConfiguration
   roles:
-    - name: developer
+    - name: tenant
       policies:
-        - p, proj:admin-apps:developer, applications, get, *, allow
-        - p, proj:admin-apps:developer, applications, sync, *, allow
+        - p, proj:crcd:tenant, applications, get, crcd/*, allow
+        - p, proj:crcd:tenant, applications, sync, crcd/*, allow
+        - p, proj:crcd:tenant, applications, action/*, crcd/*, allow
+        - p, proj:crcd:tenant, logs, get, crcd/*, allow
       groups:
-        - sam_frank_admins_posix
+        - sam_frank_active_users
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
