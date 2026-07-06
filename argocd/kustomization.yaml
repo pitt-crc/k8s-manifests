@@ -13,6 +13,7 @@ helmCharts:
 resources:
   - applications.yaml
   - appprojects.yaml
+  - configmaps.yaml
 
 patches:
   - path: patches/ldap.yaml

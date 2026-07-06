@@ -21,15 +21,6 @@ spec:
       kind: MutatingWebhookConfiguration
     - group: admissionregistration.k8s.io
       kind: ValidatingWebhookConfiguration
-  roles:
-    - name: tenant
-      policies:
-        - p, proj:admin-apps:tenant, applications, get, admin-apps/*, allow
-        - p, proj:admin-apps:tenant, applications, sync, admin-apps/*, allow
-        - p, proj:admin-apps:tenant, applications, action/*, admin-apps/*, allow
-        - p, proj:admin-apps:tenant, logs, get, admin-apps/*, allow
-      groups:
-        - sam_frank_admins_posix
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
