@@ -28,4 +28,4 @@ data:
           userMatchers:
           - userAttr: uid
             groupAttr: memberUid
-          nameAttr: name
+          nameAttr: cn
