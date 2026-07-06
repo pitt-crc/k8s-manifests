@@ -21,6 +21,13 @@ spec:
       kind: MutatingWebhookConfiguration
     - group: admissionregistration.k8s.io
       kind: ValidatingWebhookConfiguration
+  roles:
+    - name: developer
+      policies:
+        - p, proj:admin-apps:developer, applications, get, *, allow
+        - p, proj:admin-apps:developer, applications, sync, *, allow
+      groups:
+        - sam_frank_admins_posix
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
