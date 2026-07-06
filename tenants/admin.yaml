@@ -24,8 +24,8 @@ spec:
   roles:
     - name: developer
       policies:
-        - p, proj:admin-apps:developer, applications, get, *, deny
-        - p, proj:admin-apps:developer, applications, sync, *, deny
+        - p, proj:admin-apps:developer, applications, get, *, allow
+        - p, proj:admin-apps:developer, applications, sync, *, allow
       groups:
         - sam_frank_admins_posix
 ---
