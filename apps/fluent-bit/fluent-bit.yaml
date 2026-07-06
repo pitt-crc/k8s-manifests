@@ -163,7 +163,7 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: fluent-bit
-  namespace: fluent-bit
+  namespace: admin-fluent-bit
   labels:
     k8s-app: fluent-bit-logging
     kubernetes.io/cluster-service: "true"
