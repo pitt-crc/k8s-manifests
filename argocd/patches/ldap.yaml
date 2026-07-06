@@ -27,5 +27,5 @@ data:
           baseDN: "ou=groups,dc=frank,dc=sam,dc=pitt,dc=edu"
           userMatchers:
           - userAttr: uid
-            groupAttr: member
+            groupAttr: memberUid
           nameAttr: name
