@@ -4,9 +4,9 @@ metadata:
   name: crcd
   namespace: argocd
 spec:
-  description: CRCD owned application deployments.
+  description: CRCD application deployments.
   sourceRepos:
-    - https://github.com/pitt-crc/CRCD-App-Manifests.git
+    - '*'
   destinations:
     - server: https://kubernetes.default.svc
       namespace: crcd-*
@@ -60,3 +60,25 @@ spec:
         syncOptions:
           - CreateNamespace=true
           - ServerSideApply=true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: crcd-monitoring
+  namespace: argocd
+spec:
+  project: crcd
+  source:
+    repoURL: https://github.com/pitt-crc/Ops-Monitoring.git
+    targetRevision: main
+    path: "manifests"
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: crcd-monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
