@@ -106,8 +106,8 @@ data:
     [FILTER]
         Name                record_modifier
         Match               *
-        Record tkg_instance <cluster-name>
-        Record tkg_cluster  <cluster-name>
+        Record tkg_instance crcd-dev-01
+        Record tkg_cluster  crcd-dev-01
 
     [FILTER]
         Name                nest
