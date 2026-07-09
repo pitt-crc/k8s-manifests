@@ -7,3 +7,6 @@ controller:
   manager:
     clientCache:
       persistenceModel: none
+
+upgradeCRDs:
+  enabled: false
