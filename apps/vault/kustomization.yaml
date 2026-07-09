@@ -13,8 +13,6 @@ helmCharts:
     releaseName: vault-secrets-operator
     repo: https://helm.releases.hashicorp.com
     valuesFile: values/vso.yaml
-    additionalArgs:
-      - --include-crds
 
 resources:
   - certificates.yaml
