@@ -8,5 +8,6 @@ controller:
     clientCache:
       persistenceModel: none
 
-upgradeCRDs:
-  enabled: false
+hooks:
+  upgradeCRDs:
+    enabled: false
