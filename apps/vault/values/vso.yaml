@@ -1,0 +1,9 @@
+defaultVaultConnection:
+  enabled: false
+defaultAuthMethod:
+  enabled: false
+
+controller:
+  manager:
+    clientCache:
+      persistenceModel: none

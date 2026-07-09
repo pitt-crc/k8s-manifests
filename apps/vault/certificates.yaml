@@ -72,4 +72,3 @@ spec:
     kind: ClusterIssuer
   dnsNames:
     - vault.crcd.pitt.edu
-

@@ -6,7 +6,16 @@ helmCharts:
     version: 0.32.0
     releaseName: vault
     repo: https://helm.releases.hashicorp.com
-    valuesFile: values.yaml
+    valuesFile: values/vault.yaml
+
+  - name: vault-secrets-operator
+    version: 1.4.0
+    releaseName: vault-secrets-operator
+    repo: https://helm.releases.hashicorp.com
+    valuesFile: values/vso.yaml
+    additionalArgs:
+      - --include-crds
+
 resources:
   - certificates.yaml
   - token-reviewer.yaml
