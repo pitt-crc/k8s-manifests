@@ -13,7 +13,7 @@ server:
   certificate:
     enabled: true
     secretName: argocd-tls
+    domain: argo.crcd.pitt.edu
     issuer:
       name: sectigo-issuer
       kind: ClusterIssuer
-    domain: argo.crcd.pitt.edu

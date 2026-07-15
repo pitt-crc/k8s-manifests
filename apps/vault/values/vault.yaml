@@ -3,13 +3,6 @@
 global:
   enabled: true
   tlsDisable: false
-  resources:
-    requests:
-      memory: 256Mi
-      cpu: 250m
-    limits:
-      memory: 256Mi
-      cpu: 250m
 
 # The Vault Injector intercepts pod creation across the cluster and injects a
 # sidecar container into any pod having the appropriate annotations. The helm
