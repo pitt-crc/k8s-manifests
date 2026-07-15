@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: cert-manager-vso-auth
+  namespace: admin-cert-manager
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultConnection
+metadata:
+  name: vault
+  namespace: admin-cert-manager
+spec:
+  address: https://vault.crcd.pitt.edu
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuth
+metadata:
+  name: cert-manager-vso-auth
+  namespace: admin-cert-manager
+spec:
+  vaultConnectionRef: vault
+  method: kubernetes
+  mount: kubernetes
+  kubernetes:
+    role: cert-manager-eab-reader
+    serviceAccount: cert-manager-vso-auth
