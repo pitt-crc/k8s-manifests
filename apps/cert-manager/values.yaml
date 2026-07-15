@@ -1,0 +1,9 @@
+crds:
+  enabled: true
+
+# The chart defaults the leader-election lease namespace to kube-system,
+# which the admin-apps AppProject (destinations: admin-*) rejects and where
+# the controller SA has no lease permissions. Pin it to the release namespace.
+global:
+  leaderElection:
+    namespace: admin-cert-manager
