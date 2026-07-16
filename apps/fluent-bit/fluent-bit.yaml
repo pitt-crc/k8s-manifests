@@ -6,8 +6,6 @@ metadata:
   labels:
     kubernetes.io/metadata.name: fluent-bit
     pod-security.kubernetes.io/enforce: privileged
-  annotations:
-    kapp.k14s.io/delete-strategy: orphan
 ---
 apiVersion: v1
 kind: ServiceAccount
