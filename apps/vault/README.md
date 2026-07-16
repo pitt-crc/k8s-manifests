@@ -76,9 +76,9 @@ A healthy node will show `Sealed: false` and `HA Mode: active` or
 - Unseal the `vault-0` pod first. It is typically elected as the
   *lead* node in HA mode and the other nodes need it to be reachable
   to join the cluster.
-- Pods that remain sealed too long will be automatically restarted by
-  Kubernetes. Administrators may wish to restart the sealed pod(s)
-  manually before unsealing to maximize the time they have while
-  executing the unseal commands.
+- Pods that remain sealed too long will fail their health checks and
+  be restarted by Kubernetes. Administrators may wish to restart the
+  sealed pod(s) manually before unsealing to maximize the time they
+  have while executing the unseal commands.
 - If a node re-seals itself after being unsealed, it means it lost
   contact with the active node and needs to be unsealed again.
