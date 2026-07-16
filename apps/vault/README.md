@@ -16,14 +16,33 @@ and continue serving requests without interruption. All communication
 between nodes, clients, and the server is encrypted using TLS.
 Certificates are provisioned and rotated automatically by cert-manager.
 
-Applications running in the cluster retrieve secrets through the _Vault
-Agent Injector_, a Kubernetes webhook controller that intercepts pod
-creation and attaches a sidecar container to any pod configured to
-request one. The sidecar authenticates with Vault on the application's
-behalf, retrieves the required secrets, and writes them to a shared
-in-memory volume that the application can read at runtime. Access
-control is enforced by verifying each pod's Kubernetes service account
-identity against the cluster API before any secrets are granted.
+Applications retrieve secrets from Vault in one of two ways,
+In each case, access is granted only after Vault verifies the 
+requesting workload's Kubernetes service account identity against 
+the cluster API, so a workload can reach only the secrets its 
+identity is permitted to access.
+
+The first mechanism is the _Vault Agent Injector_, a Kubernetes webhook
+controller that intercepts pod creation and attaches a sidecar container
+to any pod configured to request one. The sidecar authenticates with
+Vault on the application's behalf, retrieves the required secrets, and
+writes them to a shared in-memory volume that the application can read
+at runtime.
+
+The second mechanism is the _Vault Secrets Operator_ (VSO), installed
+from its own Helm chart alongside the server. Rather than attaching a
+sidecar to every pod, VSO runs as a single controller that mirrors
+chosen Vault secrets into ordinary Kubernetes secrets. A namespace
+declares which Vault server to talk (using a `VaultConnection` resource) 
+how to log in (`VaultAuth`) and the secret it wants to access  
+(`VaultStaticSecret`). The operator logs in using that namespace's
+service account, reads the secret, and writes it into a native
+Kubernetes secret that any workload can consume the usual way.
+
+Secrets are re-read on a schedule, so a value rotated in Vault 
+propagates into the cluster on its own. VSO ships here with no 
+default connection or authentication configured, so each consuming
+namespace supplies its own.
 
 
 ## Unsealing
