@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: cert-manager-vso-auth
+  name: admin-cert-manager-reader
   namespace: admin-cert-manager
 ---
 apiVersion: secrets.hashicorp.com/v1beta1
@@ -22,8 +22,8 @@ spec:
   method: kubernetes
   mount: kubernetes
   kubernetes:
-    role: cert-manager-eab-reader
-    serviceAccount: cert-manager-vso-auth
+    role: admin-cert-manager-reader
+    serviceAccount: admin-cert-manager-reader
 ---
 apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultStaticSecret
