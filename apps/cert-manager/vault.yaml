@@ -24,3 +24,19 @@ spec:
   kubernetes:
     role: cert-manager-eab-reader
     serviceAccount: cert-manager-vso-auth
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  name: sectigo-eab-credentials
+  namespace: admin-cert-manager
+spec:
+  vaultAuthRef: cert-manager-vso-auth
+  mount: admin
+  type: kv-v2
+  path: cert-manager
+  refreshAfter: 1h
+  destination:
+    name: sectigo-eab-credentials
+    create: true
+    type: Opaque

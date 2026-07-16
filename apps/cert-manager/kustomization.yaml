@@ -11,5 +11,4 @@ helmCharts:
 
 resources:
   - clusterissuers.yaml
-  - vaultauth.yaml
-  - vaultsecrets.yaml
+  - vault.yaml
