@@ -52,7 +52,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: crcd-llmas
+  name: crcd-lmas
   namespace: argocd
 spec:
   project: crcd
@@ -62,7 +62,7 @@ spec:
     path: "manifests"
   destination:
     server: https://kubernetes.default.svc
-    namespace: crcd-dataverse
+    namespace: crcd-lmas
   syncPolicy:
     automated:
       prune: true
