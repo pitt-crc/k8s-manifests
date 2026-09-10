@@ -48,3 +48,25 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: crcd-llmas
+  namespace: argocd
+spec:
+  project: crcd
+  source:
+    repoURL: https://github.com/pitt-crc/lmas-manifests.git
+    targetRevision: main
+    path: "manifests"
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: crcd-dataverse
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
