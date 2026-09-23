@@ -15,5 +15,5 @@ server:
     secretName: argocd-tls
     domain: argo.crcd.pitt.edu
     issuer:
-      name: sectigo-issuer
+      name: certinext-issuer
       kind: ClusterIssuer

@@ -29,11 +29,10 @@ trouble (see relevant settings in `values.yaml`).
 
 ## Issuing Public Certificates
 
-The `sectigo-issuer` `ClusterIssuer` is the only certificate authority
-referenced by this deployment. Being a *cluster* issuer rather than a
-namespaced one, it can sign certificates for `Certificate` resources in
-any namespace, which is why a single definition here serves the whole
-cluster.
+The `certinext-issuer` is the only certificate authority referenced by 
+this deployment. Being a *cluster* issuer rather than a namespaced one, 
+it can sign certificates for `Certificate` resources in any namespace, 
+which is why a single definition here serves the whole cluster.
 
 It issues certificates through ACME, the same automated protocol used by
 Let's Encrypt, but pointed at Sectigo's enterprise ACME service rather
