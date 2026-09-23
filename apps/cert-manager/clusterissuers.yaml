@@ -1,18 +1,27 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: certinext-eab-credentials
+  namespace: admin-cert-manager
+type: Opaque
+stringData:
+  hmac-key: "MTY1NTEzMjc3YjA4NGYwZGE4Y2ZmMWYyNzEyMmE0ZmU"
+---
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
-  name: sectigo-issuer
+  name: certinext-issuer
 spec:
   acme:
-    server: "https://acme.enterprise.sectigo.com"
-    email: "<acme-email>"
+    server: "https://acme-us.certinext.io/v1/directory"
+    email: "noreply@pitt.edu"
     privateKeySecretRef:
-      name: sectigo-issuer-account-key
+      name: certinext-issuer-account-key
     externalAccountBinding:
-      keyID: "f735f307dc39dcf54fd0017bfe0f314a"
+      keyID: "58bb198497e9491f9d8ad49e376329e9"
       keySecretRef:
-        name: sectigo-eab-credentials
-        key: eab_hmac
+        name: certinext-eab-credentials
+        key: hmac-key
     solvers:
       - http01:
           ingress:

@@ -78,7 +78,7 @@ metadata:
 spec:
   secretName: vault-public-tls
   issuerRef:
-    name: sectigo-issuer
+    name: certinext-issuer
     kind: ClusterIssuer
   dnsNames:
     - vault.crcd.pitt.edu
