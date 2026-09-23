@@ -55,7 +55,7 @@ server:
           drop:
             - ALL
 
-  # Custom readiness/liveness probes are required for high availability deployments
+  # Custom readiness/liveness probes for high availability deployments.
   # These values are pulled directly from suggestions in the official docs.
   readinessProbe:
     enabled: true
@@ -161,6 +161,48 @@ server:
             leader_client_key_file = "/vault/userconfig/tls-server/tls.key"
           }
         }
+
+  # Lets the tls-reloader sidecar send SIGHUP to the vault process in the
+  # main container without needing a full pod restart (and re-unseal).
+  shareProcessNamespace: true
+
+  extraContainers:
+    - name: tls-reloader
+      image: alpine:3.20
+      command:
+        - /bin/sh
+        - -ec
+        - |
+          LAST=""
+          while true; do
+            CURRENT=$(cat /vault/userconfig/tls-server/tls.crt /vault/userconfig/vault-public-tls/tls.crt 2>/dev/null | md5sum)
+            if [ -n "$LAST" ] && [ "$CURRENT" != "$LAST" ]; then
+              echo "TLS material changed, signaling vault"
+          
+              pkill -HUP vault || true
+            fi
+          
+            LAST="$CURRENT"
+            sleep 10m
+          done
+      securityContext:
+        allowPrivilegeEscalation: false
+        runAsNonRoot: true
+        runAsUser: 100
+        seccompProfile:
+          type: RuntimeDefault
+        capabilities:
+          drop:
+            - ALL
+      # Mount TLS certificates. The chart renders volume names from
+      # server.extraVolumes using the `userconfig-<name>` pattern
+      volumeMounts:
+        - name: userconfig-tls-server
+          mountPath: /vault/userconfig/tls-server
+          readOnly: true
+        - name: userconfig-vault-public-tls
+          mountPath: /vault/userconfig/vault-public-tls
+          readOnly: true
 
 # Vault web interface settings
 ui:

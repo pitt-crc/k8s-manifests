@@ -10,24 +10,31 @@ The manifests in this directory deploy Vault and its supporting
 resources into the `admin-vault` namespace. The deployment is managed
 via Kustomize and the official HashiCorp Vault Helm chart.
 
-The Vault server runs as a high availability raft cluster. If a Vault
-server node becomes unavailable, the remaining nodes elect a new leader
-and continue serving requests without interruption. All communication
-between nodes, clients, and the server is encrypted using TLS.
-Certificates are provisioned and rotated automatically by cert-manager.
+The Vault server runs as a high availability raft cluster. If a single
+Vault server node becomes unavailable, the remaining nodes continue 
+serving requests without interruption. All communication between nodes, 
+clients, and the server is encrypted using TLS. 
+
+TLS certificates are provisioned and renewed automatically by cert-manager.
+Vault does not detect certificate changes on disk by itself, so a
+`tls-reloader` sidecar runs alongside each Vault container and sends it
+a `SIGHUP` whenever the mounted certificate files change, prompting Vault
+to reload its TLS listeners without a pod restart.
+
+## Leveraging Vault
 
 Applications retrieve secrets from Vault in one of two ways,
 In each case, access is granted only after Vault verifies the 
 requesting workload's Kubernetes service account identity against 
-the cluster API, so a workload can reach only the secrets its 
-identity is permitted to access.
+the cluster API. THi ensures a workload can only access secrets 
+allowed by the corresponding RBAC settings in Vault.
 
-The first mechanism is the _Vault Agent Injector_, a Kubernetes webhook
-controller that intercepts pod creation and attaches a sidecar container
-to any pod configured to request one. The sidecar authenticates with
-Vault on the application's behalf, retrieves the required secrets, and
-writes them to a shared in-memory volume that the application can read
-at runtime.
+The first access mechanism is the _Vault Agent Injector_, a Kubernetes
+webhook controller that intercepts pod creation and attaches a sidecar
+container to any pod configured to request one. The sidecar authenticates
+with Vault on the application's behalf, retrieves the required secrets,
+and writes them to a shared in-memory volume that the application can
+read at runtime.
 
 The second mechanism is the _Vault Secrets Operator_ (VSO), installed
 from its own Helm chart alongside the server. Rather than attaching a
@@ -40,10 +47,7 @@ service account, reads the secret, and writes it into a native
 Kubernetes secret that any workload can consume the usual way.
 
 Secrets are re-read on a schedule, so a value rotated in Vault 
-propagates into the cluster on its own. VSO ships here with no 
-default connection or authentication configured, so each consuming
-namespace supplies its own.
-
+propagates into the cluster on its own.
 
 ## Unsealing
 
@@ -90,7 +94,7 @@ kubectl exec -it vault-0 -n admin-vault -- vault status
 A healthy node will show `Sealed: false` and `HA Mode: active` or
 `standby`.
 
-### Important Notes
+## Important Notes
 
 - Unseal the `vault-0` pod first. It is typically elected as the
   *lead* node in HA mode and the other nodes need it to be reachable
