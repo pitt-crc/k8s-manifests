@@ -23,6 +23,8 @@ spec:
       kind: ValidatingAdmissionPolicyBinding
     - group: admissionregistration.k8s.io
       kind: MutatingWebhookConfiguration
+    - group: gateway.networking.k8s.io
+      kind: GatewayClass
   roles:
     - name: tenant
       policies:
