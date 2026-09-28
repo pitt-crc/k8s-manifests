@@ -52,17 +52,17 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: crcd-lmas
+  name: crcd-lmaas
   namespace: argocd
 spec:
   project: crcd
   source:
-    repoURL: https://github.com/pitt-crc/lmas-manifests.git
+    repoURL: https://github.com/pitt-crc/lmaas-manifests.git
     targetRevision: main
     path: "manifests"
   destination:
     server: https://kubernetes.default.svc
-    namespace: crcd-lmas
+    namespace: crcd-lmaas
   syncPolicy:
     automated:
       prune: true
