@@ -17,6 +17,10 @@ spec:
       kind: ClusterRole
     - group: rbac.authorization.k8s.io
       kind: ClusterRoleBinding
+    - group: admissionregistration.k8s.io
+      kind: ValidatingAdmissionPolicyBinding
+    - group: admissionregistration.k8s.io
+      kind: MutatingWebhookConfiguration
   roles:
     - name: tenant
       policies:
