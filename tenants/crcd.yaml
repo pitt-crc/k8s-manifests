@@ -18,6 +18,8 @@ spec:
     - group: rbac.authorization.k8s.io
       kind: ClusterRoleBinding
     - group: admissionregistration.k8s.io
+      kind: ValidatingAdmissionPolicy
+    - group: admissionregistration.k8s.io
       kind: ValidatingAdmissionPolicyBinding
     - group: admissionregistration.k8s.io
       kind: MutatingWebhookConfiguration
