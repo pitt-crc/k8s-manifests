@@ -41,14 +41,14 @@ metadata:
   name: oali-pelias
   namespace: argocd
 spec:
-  project: crcd
+  project: oali
   source:
     repoURL: https://github.com/pitt-crc/k8s-oali-pelias.git
     targetRevision: main
     path: "manifests"
   destination:
     server: https://kubernetes.default.svc
-    namespace: crcd-pelias
+    namespace: oali-pelias
   syncPolicy:
     automated:
       prune: true
