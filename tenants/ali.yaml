@@ -1,0 +1,58 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: oali
+  namespace: argocd
+spec:
+  description: OAli team applications.
+  sourceRepos:
+    - '*'
+  destinations:
+    - server: https://kubernetes.default.svc
+      namespace: oali-*
+  clusterResourceWhitelist:
+    - group: ""
+      kind: Namespace
+    - group: rbac.authorization.k8s.io
+      kind: ClusterRole
+    - group: rbac.authorization.k8s.io
+      kind: ClusterRoleBinding
+    - group: admissionregistration.k8s.io
+      kind: ValidatingAdmissionPolicy
+    - group: admissionregistration.k8s.io
+      kind: ValidatingAdmissionPolicyBinding
+    - group: admissionregistration.k8s.io
+      kind: MutatingWebhookConfiguration
+    - group: gateway.networking.k8s.io
+      kind: GatewayClass
+  roles:
+    - name: tenant
+      policies:
+        - p, proj:oali:tenant, applications, get, oali/*, allow
+        - p, proj:oali:tenant, applications, sync, oali/*, allow
+        - p, proj:oali:tenant, applications, action/*, oali/*, allow
+        - p, proj:oali:tenant, logs, get, oali/*, allow
+      groups:
+        - oali
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: oali-pelias
+  namespace: argocd
+spec:
+  project: crcd
+  source:
+    repoURL: https://github.com/pitt-crc/k8s-oali-pelias.git
+    targetRevision: main
+    path: "manifests"
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: crcd-pelias
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
