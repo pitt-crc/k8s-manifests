@@ -79,9 +79,9 @@ Then unseal all nodes in one pass:
 ```bash
 for pod in vault-0 vault-1 vault-2 vault-3 vault-4; do
   echo "Unsealing $pod"
-  echo "$UNSEAL_KEY_1" | kubectl exec -i $pod -n admin-vault -- vault operator unseal -
-  echo "$UNSEAL_KEY_2" | kubectl exec -i $pod -n admin-vault -- vault operator unseal -
-  echo "$UNSEAL_KEY_3" | kubectl exec -i $pod -n admin-vault -- vault operator unseal -
+  kubectl exec $pod -n admin-vault -c vault -- vault operator unseal "$UNSEAL_KEY_1"
+  kubectl exec $pod -n admin-vault -c vault -- vault operator unseal "$UNSEAL_KEY_2"
+  kubectl exec $pod -n admin-vault -c vault -- vault operator unseal "$UNSEAL_KEY_3"
 done
 ```
 
