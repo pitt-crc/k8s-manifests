@@ -26,7 +26,7 @@ spec:
     - group: gateway.networking.k8s.io
       kind: GatewayClass
   roles:
-    - name: tenant
+    - name: tenant-crcd
       policies:
         - p, proj:crcd:tenant, applications, get, crcd/*, allow
         - p, proj:crcd:tenant, applications, sync, crcd/*, allow
@@ -78,7 +78,6 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
-
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application

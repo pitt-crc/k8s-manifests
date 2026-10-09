@@ -26,7 +26,7 @@ spec:
     - group: gateway.networking.k8s.io
       kind: GatewayClass
   roles:
-    - name: tenant
+    - name: tenant-oali
       policies:
         - p, proj:oali:tenant, applications, get, oali/*, allow
         - p, proj:oali:tenant, applications, sync, oali/*, allow
