@@ -56,13 +56,3 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
----
-apiVersion: v1
-kind: ResourceQuota
-metadata:
-  name: oali-pelias
-  namespace: oali-pelias
-spec:
-  hard:
-    requests.cpu: '2'
-    requests.memory: 12Gi
